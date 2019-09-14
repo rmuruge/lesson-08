@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lesson08-Service
+spec:
+  selector:
+    app: lesson08Apache
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8088
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lesson08-pod
+  labels:
+    name: lesson08ApacheUI   
+spec:
+  restartPolicy: Never
+  containers:
+  - name: apache-container
+    image: rmuruge/lesson-08:v1 
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: shared-www
+      mountPath: /var/www/html/lesson08
+  volumes:
+  - name: shared-www
+    hostPath:
+      path: /home/ubuntu/Project8/lesson-08      
+      type: Directory
